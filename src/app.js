@@ -1,12 +1,14 @@
 const express = require('express');
 const pool = require('./config/db');
 const app = express();
-
+const authRoutes = require('./routes/authRoutes');
 app.use(express.json());
 
 app.get('/', (req, res) => {
     res.json({ message: 'Todo API is running' });
 });
+
+app.use('/api/auth', authRoutes);
 
 // Route test kết nối database
 app.get('/test-db', async(req, res) => {
