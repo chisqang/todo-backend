@@ -1,7 +1,10 @@
 const express = require('express');
 const pool = require('./config/db');
-const app = express();
 const authRoutes = require('./routes/authRoutes');
+const taskRoutes = require('./routes/taskRoutes'); // thêm dòng này
+
+const app = express();
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -9,21 +12,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-
-// Route test kết nối database
-app.get('/test-db', async(req, res) => {
-    try {
-        const result = await pool.query('SELECT NOW()');
-        res.json({
-            message: 'Kết nối database thành công!',
-            time: result.rows[0].now
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: 'Lỗi kết nối database',
-            error: error.message
-        });
-    }
-});
+app.use('/api/tasks', taskRoutes); // thêm dòng này
 
 module.exports = app;
